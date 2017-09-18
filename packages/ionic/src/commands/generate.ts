@@ -1,9 +1,8 @@
 import chalk from 'chalk';
 
 import { CommandLineInputs, CommandLineOptions, CommandPreRun } from '@ionic/cli-utils';
-import { contains, validators } from '@ionic/cli-framework/lib';
+import { contains } from '@ionic/cli-framework/lib';
 import { Command, CommandMetadata } from '@ionic/cli-utils/lib/command';
-import { FatalException } from '@ionic/cli-utils/lib/errors';
 
 const TYPE_CHOICES = ['component', 'directive', 'page', 'pipe', 'provider', 'tabs'];
 
@@ -53,45 +52,48 @@ The given ${chalk.green('name')} is normalized into an appropriate naming conven
 })
 export class GenerateCommand extends Command implements CommandPreRun {
   async preRun(inputs: CommandLineInputs, options: CommandLineOptions): Promise<void> {
-    const project = await this.env.project.load();
+    // const project = await this.env.project.load();
 
-    if (project.type !== 'ionic-angular') {
-      throw new FatalException('Generators are only supported in Ionic Angular projects.');
-    }
+    // if (project.type !== 'ionic-angular') {
+    //   throw new FatalException('Generators are only supported in Ionic Angular projects.');
+    // }
 
-    if (!inputs[0]) {
-      const generatorType = await this.env.prompt({
-        type: 'list',
-        name: 'generatorType',
-        message: 'What would you like to generate:',
-        choices: TYPE_CHOICES,
-      });
+    // if (!inputs[0]) {
+    //   const generatorType = await this.env.prompt({
+    //     type: 'list',
+    //     name: 'generatorType',
+    //     message: 'What would you like to generate:',
+    //     choices: TYPE_CHOICES,
+    //   });
 
-      inputs[0] = generatorType;
-    }
+    //   inputs[0] = generatorType;
+    // }
 
-    if (!inputs[1]) {
-      const generatorName = await this.env.prompt({
-        type: 'input',
-        name: 'generatorName',
-        message: 'What should the name be?',
-        validate: v => validators.required(v, 'name')
-      });
+    // if (!inputs[1]) {
+    //   const generatorName = await this.env.prompt({
+    //     type: 'input',
+    //     name: 'generatorName',
+    //     message: 'What should the name be?',
+    //     validate: v => validators.required(v, 'name')
+    //   });
 
-      inputs[1] = generatorName;
-    }
+    //   inputs[1] = generatorName;
+    // }
 
-    if (!this.env.flags.interactive && inputs[0] === 'tabs') {
-      throw new FatalException(`Cannot generate tabs without prompts. Run without ${chalk.green('--no-interactive')}.`);
-    }
+    // if (!this.env.flags.interactive && inputs[0] === 'tabs') {
+    //   throw new FatalException(`Cannot generate tabs without prompts. Run without ${chalk.green('--no-interactive')}.`);
+    // }
   }
 
   async run(inputs: CommandLineInputs, options: CommandLineOptions): Promise<void> {
-    const [ type, name ] = inputs;
+    // const [ type, name ] = inputs;
 
-    const { generate } = await import('@ionic/cli-utils/lib/ionic-angular/generate');
-    await generate({ env: this.env, inputs, options });
+    const { generate } = await import('@ionic/cli-utils/commands/generate');
+    await generate(this.env, inputs, options);
 
-    this.env.log.ok(`Generated a ${chalk.bold(type)}${type === 'tabs' ? ' page' : ''} named ${chalk.bold(name)}!`);
+    // const { generate } = await import('@ionic/cli-utils/lib/ionic-angular/generate');
+    // await generate({ env: this.env, inputs, options });
+
+    // this.env.log.ok(`Generated a ${chalk.bold(type)}${type === 'tabs' ? ' page' : ''} named ${chalk.bold(name)}!`);
   }
 }

@@ -1,0 +1,22 @@
+{
+  "name": "@schematics/ionic-angular",
+  "version": "0.0.1",
+  "description": "Schematics specific to Ionic Angular",
+  "scripts": {
+    "clean": "rm -f page/index.js",
+    "lint": "tslint --config ../../../tslint.js --project tsconfig.json --type-check",
+    "build": "npm run clean && tsc",
+    "watch": "tsc -w",
+    "prepublishOnly": "npm run build"
+  },
+  "keywords": [
+    "blueprints",
+    "code generation",
+    "schematics"
+  ],
+  "schematics": "./collection.json",
+  "license": "MIT",
+  "devDependencies": {
+    "@angular-devkit/schematics": "0.0.23"
+  }
+}
