@@ -8,7 +8,7 @@ import {
   IonicEnvironment,
 } from '../definitions';
 
-import { isAuthTokensResponse, isLegacyLoginResponse, isProLoginResponse, isSuperAgentError } from '../guards';
+import { isAuthTokensResponse, isLegacyLoginResponse, isProLoginResponse, isProUserResponse, isSuperAgentError } from '../guards';
 
 import { FatalException } from './errors';
 import { createFatalAPIFormat } from './http';
@@ -72,11 +72,15 @@ export class CloudSession extends BaseSession implements ISession {
       c.tokens.user = token;
     } catch (e) {
       if (isSuperAgentError(e) && e.response.status === 401) {
-        throw new FatalException(chalk.red('Incorrect email or password'));
+        throw new FatalException('Incorrect email or password.');
       }
 
       throw e;
     }
+  }
+
+  async tokenLogin(token: string) {
+    throw new FatalException('Token login with Ionic Cloud is not supported.');
   }
 
   async getAppUserToken(app_id?: string): Promise<string> {
@@ -143,7 +147,39 @@ export class ProSession extends BaseSession implements ISession {
       c.tokens.user = token;
     } catch (e) {
       if (isSuperAgentError(e) && e.response.status === 401) {
-        throw new FatalException(chalk.red('Incorrect email or password'));
+        throw new FatalException('Incorrect email or password.');
+      }
+
+      throw e;
+    }
+  }
+
+  async tokenLogin(token: string) {
+    const { req } = await this.client.make('GET', '/users/self');
+    req.set('Authorization', `Bearer ${token}`);
+
+    try {
+      const res = await this.client.do(req);
+
+      if (!isProUserResponse(res)) {
+        throw createFatalAPIFormat(req, res);
+      }
+
+      const user = res.data;
+      const c = await this.config.load();
+
+      const user_id = String(user.id);
+
+      if (c.user.id !== user_id) { // User changed
+        await this.logout();
+      }
+
+      c.user.id = user_id;
+      c.user.email = user.email;
+      c.tokens.user = token;
+    } catch (e) {
+      if (isSuperAgentError(e) && (e.response.status === 401 || e.response.status === 403)) {
+        throw new FatalException('Invalid token.');
       }
 
       throw e;

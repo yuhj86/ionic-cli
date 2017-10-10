@@ -12,7 +12,7 @@ import { validators } from '@ionic/cli-utils/lib/validators';
   longDescription: `
 Authenticate with Ionic servers and retrieve a user token, which is stored in the CLI config.
 
-Alternatively, set the ${chalk.green('IONIC_EMAIL')} and ${chalk.green('IONIC_PASSWORD')} environment variables, and the CLI will automatically authenticate you.
+Alternatively, set the ${chalk.green('IONIC_TOKEN')} environment variable and the CLI will automatically authenticate you. (You can also use ${chalk.green('IONIC_EMAIL')} and ${chalk.green('IONIC_PASSWORD')}.)
 
 If you need to create an Ionic account, use ${chalk.green('ionic signup')}.
   `,

@@ -131,13 +131,20 @@ export function isLegacyLoginResponse(r: APIResponse): r is Response<{ user_id: 
   return isAPIResponseSuccess(r) && typeof res.data.token === 'string';
 }
 
-export function isProLoginResponse(r: APIResponse): r is Response<{ user: { id: number, email: string }; token: string; }> {
+export function isProLoginResponse(r: APIResponse): r is Response<{ user: { id: number; email: string }; token: string; }> {
   const res = <any>r;
   return isAPIResponseSuccess(r)
     && typeof res.data.user === 'object'
     && typeof res.data.user.id === 'number'
     && typeof res.data.user.email === 'string'
     && typeof res.data.token === 'string';
+}
+
+export function isProUserResponse(r: APIResponse): r is Response<{ id: number; email: string; }> {
+  const res = <any>r;
+  return isAPIResponseSuccess(r)
+    && typeof res.data.id === 'number'
+    && typeof res.data.email === 'string';
 }
 
 export function isSSHKeyListResponse(r: APIResponse): r is Response<SSHKey[]> {

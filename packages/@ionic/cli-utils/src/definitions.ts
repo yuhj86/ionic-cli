@@ -314,6 +314,7 @@ export interface HydratedCommandData extends CommandData {
 
 export interface ISession {
   login(email: string, password: string): Promise<void>;
+  tokenLogin(token: string): Promise<void>;
   logout(): Promise<void>;
   isLoggedIn(): Promise<boolean>;
   getUserToken(): Promise<string>;
