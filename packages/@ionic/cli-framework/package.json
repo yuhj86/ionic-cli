@@ -1,0 +1,42 @@
+{
+  "name": "@ionic/cli-framework",
+  "version": "0.0.1",
+  "description": "The foundation framework of the Ionic CLI",
+  "homepage": "http://ionicframework.com/",
+  "author": "Ionic Team <hi@ionic.io> (http://ionic.io) ",
+  "main": "dist/index.js",
+  "engines": {
+    "node": ">=6.4.0"
+  },
+  "scripts": {
+    "clean": "rm -rf ./dist",
+    "lint": "tslint --config ../../tslint.js --project tsconfig.json --type-check",
+    "build": "npm run clean && tsc",
+    "watch": "tsc -w",
+    "test": "jest",
+    "prepublishOnly": "npm run build"
+  },
+  "license": "MIT",
+  "jest": {
+    "globals": {
+      "ts-jest": {
+        "tsConfigFile": "tsconfig.json"
+      }
+    },
+    "moduleFileExtensions": [
+      "ts",
+      "js"
+    ],
+    "transform": {
+      ".(ts)": "<rootDir>/../../../node_modules/ts-jest/preprocessor.js"
+    },
+    "testRegex": "/__tests__/.*\\.(ts|js)$"
+  },
+  "dependencies": {
+    "superagent": "^3.7.0",
+    "tslib": "^1.8.0"
+  },
+  "devDependencies": {
+    "@types/superagent": "^3.5.6"
+  }
+}
