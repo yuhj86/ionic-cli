@@ -1,7 +1,7 @@
 import { CommandMetadata, Command } from '../command';
 import { Namespace } from '../namespace';
 
-describe('@ionic/cli-utils', () => {
+describe('@ionic/cli-framework', () => {
 
   describe('Namespace', () => {
 

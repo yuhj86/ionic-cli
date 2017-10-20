@@ -6,7 +6,7 @@ import * as framework from '@ionic/cli-framework';
 
 import { EventEmitter } from 'events';
 
-export { CommandInput, CommandLineInput, CommandLineInputs, CommandLineOptions, CommandOptionType } from '@ionic/cli-framework';
+export { CommandInput, CommandLineInput, CommandLineInputs, CommandLineOptions, CommandOptionType, HydratedCommandData, INamespace } from '@ionic/cli-framework';
 
 export interface SuperAgentError extends Error {
   response: superagentType.Response;
@@ -269,13 +269,6 @@ export type BackendFlag = 'pro' | 'legacy';
 export interface CommandData extends framework.CommandData<framework.CommandInput, CommandOption> {
   type: 'global' | 'project';
   backends?: BackendFlag[];
-  fullName?: string;
-}
-
-export interface HydratedCommandData extends CommandData {
-  namespace: INamespace;
-  aliases: string[];
-  fullName: string;
 }
 
 export interface ISession {
@@ -590,46 +583,20 @@ export interface RootPlugin extends Plugin {
   namespace: IRootNamespace;
 }
 
-export interface INamespace {
-  root: boolean;
-  name: string;
-  description: string;
-  longDescription: string;
-  namespaces: INamespaceMap;
-  commands: ICommandMap;
-
-  locate(argv: string[]): Promise<[number, string[], ICommand | INamespace]>;
-  getCommandMetadataList(): Promise<HydratedCommandData[]>;
-}
-
-export interface IRootNamespace extends INamespace {
+export interface IRootNamespace extends framework.INamespace {
   root: true;
   name: 'ionic';
 
   runCommand(env: IonicEnvironment, pargv: string[], opts?: { root?: boolean; }): Promise<void>;
 }
 
-export interface ICommand {
+export interface ICommand extends framework.ICommand<CommandData> {
   env: IonicEnvironment;
-  metadata: CommandData;
-
-  validate(inputs: framework.CommandLineInputs): Promise<void>;
-  run(inputs: framework.CommandLineInputs, options: framework.CommandLineOptions): Promise<void>;
-  execute(inputs: framework.CommandLineInputs, options: framework.CommandLineOptions): Promise<void>;
+  execute: framework.CommandRunFn;
 }
 
 export interface CommandPreRun extends ICommand {
-  preRun(inputs: framework.CommandLineInputs, options: framework.CommandLineOptions): Promise<void>;
-}
-
-export type NamespaceMapGetter = () => Promise<INamespace>;
-export type CommandMapGetter = () => Promise<ICommand>;
-
-export interface INamespaceMap extends Map<string, NamespaceMapGetter> {}
-
-export interface ICommandMap extends Map<string, string | CommandMapGetter> {
-  getAliases(): Map<string, string[]>;
-  resolveAliases(cmdName: string): undefined | CommandMapGetter;
+  preRun: framework.CommandRunFn;
 }
 
 export interface ImageResource {

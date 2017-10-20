@@ -1,10 +1,10 @@
 import chalk from 'chalk';
 
-import { IRootNamespace, IonicEnvironment, KNOWN_BACKENDS } from '@ionic/cli-utils';
-import { CommandMap, Namespace, NamespaceMap } from '@ionic/cli-utils/lib/namespace';
+import { ICommand, IRootNamespace, IonicEnvironment, KNOWN_BACKENDS } from '@ionic/cli-utils';
+import { CommandMap, Namespace, NamespaceMap } from '@ionic/cli-framework/lib';
 import { FatalException } from '@ionic/cli-utils/lib/errors';
 
-export class IonicNamespace extends Namespace implements IRootNamespace {
+export class IonicNamespace extends Namespace<ICommand> implements IRootNamespace {
   readonly root = true;
   readonly name = 'ionic';
   readonly description = '';

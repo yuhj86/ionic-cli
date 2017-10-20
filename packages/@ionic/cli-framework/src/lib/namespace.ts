@@ -6,12 +6,12 @@ import {
   NamespaceMapGetter,
 } from '../definitions';
 
-import { strcmp } from '@ionic/cli-framework/utils/string';
+import { strcmp } from '../utils/string';
 
-export class CommandMap extends Map<string, string | CommandMapGetter> {
+export class CommandMap<T extends ICommand> extends Map<string, string | CommandMapGetter<T>> {
   getAliases(): Map<string, string[]> {
     const cmdAliases = new Map<string, string[]>();
-    const cmdMapContents: ReadonlyArray<[string, string | CommandMapGetter]> = Array.from(this.entries());
+    const cmdMapContents: ReadonlyArray<[string, string | CommandMapGetter<T>]> = Array.from(this.entries());
     const aliasToCmd = <ReadonlyArray<[string, string]>>cmdMapContents.filter((value): value is [string, string] => typeof value[1] === 'string'); // TODO: typescript bug?
     aliasToCmd.forEach(([alias, cmd]) => {
       const aliases = cmdAliases.get(cmd) || [];
@@ -22,7 +22,7 @@ export class CommandMap extends Map<string, string | CommandMapGetter> {
     return cmdAliases;
   }
 
-  resolveAliases(cmdName: string): undefined | CommandMapGetter {
+  resolveAliases(cmdName: string): undefined | CommandMapGetter<T> {
     const r = this.get(cmdName);
 
     if (typeof r !== 'string') {
@@ -33,24 +33,24 @@ export class CommandMap extends Map<string, string | CommandMapGetter> {
   }
 }
 
-export class NamespaceMap extends Map<string, NamespaceMapGetter> {}
+export class NamespaceMap<T extends ICommand> extends Map<string, NamespaceMapGetter<T>> {}
 
-export class Namespace implements INamespace {
+export class Namespace<T extends ICommand> implements INamespace<T> {
   root = false;
   name = '';
   description = '';
   longDescription = '';
 
-  namespaces = new NamespaceMap();
-  commands = new CommandMap();
+  namespaces = new NamespaceMap<T>();
+  commands = new CommandMap<T>();
 
   /**
    * Recursively inspect inputs supplied to walk down all the tree of
    * namespaces available to find the command that we will execute or the
    * right-most namespace matched if the command is not found.
    */
-  async locate(argv: string[]): Promise<[number, string[], ICommand | INamespace]> {
-    const _locate = async (depth: number, inputs: string[], ns: INamespace, namespaceDepthList: string[]): Promise<[number, string[], ICommand | INamespace]> => {
+  async locate(argv: string[]): Promise<[number, string[], T | INamespace<T>]> {
+    const _locate = async (depth: number, inputs: string[], ns: INamespace<T>, namespaceDepthList: string[]): Promise<[number, string[], T | INamespace<T>]> => {
       const nsgetter = ns.namespaces.get(inputs[0]);
       if (!nsgetter) {
         const commands = ns.commands;
@@ -75,9 +75,13 @@ export class Namespace implements INamespace {
   /**
    * Get all command metadata in a flat structure.
    */
-  async getCommandMetadataList(): Promise<HydratedCommandData[]> {
-    const _getCommandMetadataList = async (namespace: INamespace, namespaceDepthList: string[]) => {
-      const commandList: HydratedCommandData[] = [];
+  async getCommandMetadataList(): Promise<(T['metadata'] & HydratedCommandData<T>)[]> {
+    const _getCommandMetadataList = async (namespace: INamespace<T>, namespaceDepthList: string[]) => {
+      type R = T['metadata'] & HydratedCommandData<T>;
+
+      const t: R = {};
+
+      const commandList: R[] = [];
       const nsAliases = namespace.commands.getAliases();
 
       // Gather all commands for a namespace and turn them into simple key value
@@ -96,7 +100,7 @@ export class Namespace implements INamespace {
 
       commandList.sort((a, b) => strcmp(a.name, b.name));
 
-      let namespacedCommandList: HydratedCommandData[] = [];
+      let namespacedCommandList: R[] = [];
 
       // If this namespace has children then get their commands
       if (namespace.namespaces.size > 0) {
