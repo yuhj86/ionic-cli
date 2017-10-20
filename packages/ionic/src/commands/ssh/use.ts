@@ -5,7 +5,7 @@ import chalk from 'chalk';
 import { BACKEND_PRO, CommandLineInputs, CommandLineOptions } from '@ionic/cli-utils';
 import { CommandMetadata } from '@ionic/cli-utils/lib/command';
 import { validators } from '@ionic/cli-utils/lib/validators';
-import { fileToString, fsWriteFile } from '@ionic/cli-utils/lib/utils/fs';
+import { fileToString, fsWriteFile } from '@ionic/cli-framework/utils/fs';
 import { FatalException } from '@ionic/cli-utils/lib/errors';
 
 import { SSHBaseCommand } from './base';

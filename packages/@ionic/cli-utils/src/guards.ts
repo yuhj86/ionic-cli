@@ -4,7 +4,6 @@ import {
   APIResponseSuccess,
   AppDetails,
   AuthToken,
-  BowerJson,
   CommandPreRun,
   CordovaPackageJson,
   Deploy,
@@ -17,7 +16,6 @@ import {
   INamespace,
   LogLevel,
   PackageBuild,
-  PackageJson,
   PackageProjectRequest,
   Plugin,
   Response,
@@ -42,11 +40,6 @@ export function isLogLevel(l: string): l is LogLevel {
   return LOG_LEVELS.includes(loglevel);
 }
 
-export function isPackageJson(o: Object): o is PackageJson {
-  const obj = <PackageJson>o;
-  return obj && typeof obj.name === 'string';
-}
-
 export function isCordovaPackageJson(o: Object): o is CordovaPackageJson {
   const obj = <CordovaPackageJson>o;
   return obj &&
@@ -54,11 +47,6 @@ export function isCordovaPackageJson(o: Object): o is CordovaPackageJson {
     typeof obj.cordova === 'object' &&
     typeof obj.cordova.platforms === 'object' &&
     typeof obj.cordova.plugins === 'object';
-}
-
-export function isBowerJson(o: Object): o is BowerJson {
-  const obj = <BowerJson>o;
-  return obj && typeof obj.name === 'string';
 }
 
 export function isExitCodeException(e: Error): e is ExitCodeException {

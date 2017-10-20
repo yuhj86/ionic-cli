@@ -4,7 +4,7 @@ import chalk from 'chalk';
 
 import { BACKEND_PRO, CommandLineInputs, CommandLineOptions, CommandPreRun } from '@ionic/cli-utils';
 import { CommandMetadata } from '@ionic/cli-utils/lib/command';
-import { fsMkdirp, fsUnlink, pathExists } from '@ionic/cli-utils/lib/utils/fs';
+import { fsMkdirp, fsUnlink, pathExists } from '@ionic/cli-framework/utils/fs';
 
 import { SSHBaseCommand } from './base';
 

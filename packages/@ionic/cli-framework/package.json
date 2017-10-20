@@ -4,13 +4,14 @@
   "description": "The foundation framework of the Ionic CLI",
   "homepage": "http://ionicframework.com/",
   "author": "Ionic Team <hi@ionic.io> (http://ionic.io) ",
-  "main": "dist/index.js",
+  "main": "./index.js",
+  "types": "./index.d.ts",
   "engines": {
     "node": ">=6.4.0"
   },
   "scripts": {
-    "clean": "rm -rf ./dist",
-    "lint": "tslint --config ../../tslint.js --project tsconfig.json --type-check",
+    "clean": "rm -rf index.* definitions.* guards.* ./utils",
+    "lint": "tslint --config ../../../tslint.js --project tsconfig.json --type-check",
     "build": "npm run clean && tsc",
     "watch": "tsc -w",
     "test": "jest",
@@ -33,10 +34,12 @@
     "testRegex": "/__tests__/.*\\.(ts|js)$"
   },
   "dependencies": {
+    "ncp": "^2.0.0",
     "superagent": "^3.7.0",
     "tslib": "^1.8.0"
   },
   "devDependencies": {
+    "@types/ncp": "^2.0.1",
     "@types/superagent": "^3.5.6"
   }
 }

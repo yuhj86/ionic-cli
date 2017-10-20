@@ -12,7 +12,7 @@ import {
 } from '@ionic/cli-utils';
 
 import { mapLegacyCommand, modifyArguments, parseArgs } from '@ionic/cli-utils/lib/init';
-import { pathExists } from '@ionic/cli-utils/lib/utils/fs';
+import { pathExists } from '@ionic/cli-framework/utils/fs';
 import { isExitCodeException } from '@ionic/cli-utils/guards';
 
 import { IonicNamespace } from './commands';

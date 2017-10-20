@@ -1,6 +1,7 @@
 {
   "compilerOptions": {
     "allowUnreachableCode": false,
+    "baseUrl": "./",
     "declaration": true,
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
@@ -10,7 +11,7 @@
     "moduleResolution": "node",
     "noFallthroughCasesInSwitch": true,
     "noUnusedLocals": true,
-    "outDir": "./dist",
+    "outDir": "./",
     "pretty": true,
     "strict": true,
     "target": "es6",
