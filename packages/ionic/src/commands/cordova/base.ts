@@ -100,7 +100,7 @@ export const CORDOVA_RUN_COMMAND_OPTIONS: CommandOption[] = [
   },
 ];
 
-export class CordovaCommand extends Command {
+export abstract class CordovaCommand extends Command {
   async preRunChecks() {
     const { ConfigXml } = await import('@ionic/cli-utils/lib/cordova/config');
     const { prettyPath } = await import('@ionic/cli-utils/lib/utils/format');

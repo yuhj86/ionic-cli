@@ -22,7 +22,6 @@ import {
   SSHKey,
   SecurityProfile,
   SuperAgentError,
-  ValidationError,
 } from './definitions';
 
 export const LOG_LEVELS: LogLevel[] = ['debug', 'info', 'ok', 'warn', 'error', 'announce'];
@@ -52,13 +51,6 @@ export function isCordovaPackageJson(o: Object): o is CordovaPackageJson {
 export function isExitCodeException(e: Error): e is ExitCodeException {
   const err = <any>e;
   return err && typeof err.exitCode === 'number' && err.exitCode >= 0 && err.exitCode <= 255;
-}
-
-export function isValidationErrorArray(e: Object[]): e is ValidationError[] {
-  const err = <ValidationError[]>e;
-  return err && err[0]
-    && typeof err[0].message === 'string'
-    && typeof err[0].inputName === 'string';
 }
 
 export function isPlugin(p: any): p is Plugin {

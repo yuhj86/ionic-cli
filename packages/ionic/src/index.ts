@@ -232,7 +232,8 @@ export async function run(pargv: string[], env: { [k: string]: string; }) {
   pargv = modifyArguments(pargv.slice(2));
   env['IONIC_CLI_LIB'] = __filename;
 
-  const { isSuperAgentError, isValidationErrorArray } = await import('@ionic/cli-utils/guards');
+  const { isSuperAgentError } = await import('@ionic/cli-utils/guards');
+  const { isValidationErrorArray } = await import('@ionic/cli-framework/guards');
 
   const plugin = await generateRootPlugin();
   const ienv = await generateIonicEnvironment(plugin, pargv, env);

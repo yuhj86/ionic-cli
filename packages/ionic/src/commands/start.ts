@@ -2,6 +2,7 @@ import * as path from 'path';
 
 import chalk from 'chalk';
 
+import { validators } from '@ionic/cli-framework/lib';
 import { BACKEND_LEGACY, BACKEND_PRO, CommandLineInputs, CommandLineOptions, CommandPreRun, StarterTemplate } from '@ionic/cli-utils';
 import { Command, CommandMetadata } from '@ionic/cli-utils/lib/command';
 import { FatalException } from '@ionic/cli-utils/lib/errors';
@@ -163,7 +164,6 @@ export class StartCommand extends Command implements CommandPreRun {
         this.env.log.info(`Using ${chalk.bold(app.slug)} for ${chalk.green('name')}.`);
         inputs[0] = app.slug;
       } else {
-        const { validators } = await import('@ionic/cli-utils/lib/validators');
         const name = await this.env.prompt({
           type: 'input',
           name: 'name',
