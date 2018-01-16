@@ -2,7 +2,7 @@ import { Deploy, DeployChannel, DeploySnapshot, DeploySnapshotRequest, IClient }
 import { isDeployChannelResponse, isDeployResponse, isDeploySnapshotRequestResponse, isDeploySnapshotResponse } from '../guards';
 import { createFatalAPIFormat } from './http';
 // import { s3SignedUpload } from './utils/aws';
-import { ucloudSignedUpload } from './utils/ucloud'
+import { ucloudSignedUpload } from './utils/ucloud';
 
 export class DeployClient {
   constructor(protected appUserToken: string, protected client: IClient) {}
@@ -70,6 +70,6 @@ export class DeployClient {
 
   uploadSnapshot(snapshot: DeploySnapshotRequest, zip: NodeJS.ReadableStream, progress?: (loaded: number, total: number) => void): Promise<void> {
     // return s3SignedUpload(this.client.config, snapshot.presigned_post, zip, { progress });
-    return ucloudSignedUpload(this.client.config, snapshot.presigned_post, zip, { progress })
+    return ucloudSignedUpload(this.client.config, snapshot.presigned_post, zip, { progress });
   }
 }
