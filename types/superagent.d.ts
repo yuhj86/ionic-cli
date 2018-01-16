@@ -95,7 +95,7 @@ declare module "superagent" {
         _timeout: number;
         abort(): void;
         accept(type: string): this;
-        attach(field: string, file: string, filename?: string): this;
+        attach(field: string, file: string | Buffer,  options?: string | { filename?: string; contentType?: string }): this;
         auth(user: string, name: string): this;
         buffer(val?: boolean): this;
         clearTimeout(): this;
